@@ -13,6 +13,7 @@ urlpatterns = [
     path("porte-char/", include("portechar.urls")),
     path("depenses/", include("depenses.urls")),
     path("pointage/", include("pointage.urls")),
+    path("stock/", include("stock.urls")),
     path("rapports/", include("rapports.urls")),
     path("", include("dashboard.urls")),
 ]

@@ -32,6 +32,11 @@
       <a class="side-link {% if request.resolver_match.url_name == 'grille' %}active{% endif %}" href="{% url 'pointage:grille' %}"><span class="ico">🗓️</span> Présence</a>
       <a class="side-link {% if request.resolver_match.url_name == 'employe_liste' %}active{% endif %}" href="{% url 'pointage:employe_liste' %}"><span class="ico">👥</span> Employés</a>
 
+      <div class="side-section">Stock</div>
+      <a class="side-link {% if request.resolver_match.url_name == 'inventaire' %}active{% endif %}" href="{% url 'stock:inventaire' %}"><span class="ico">📦</span> Inventaire</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'mouvement_liste' %}active{% endif %}" href="{% url 'stock:mouvement_liste' %}"><span class="ico">🔁</span> Mouvements</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'synthese' %}active{% endif %}" href="{% url 'stock:synthese' %}"><span class="ico">📊</span> Synthèse stock</a>
+
       <div class="side-section">Référentiel</div>
       <a class="side-link {% if request.resolver_match.url_name == 'vehicule_liste' %}active{% endif %}" href="{% url 'referentiel:vehicule_liste' %}"><span class="ico">🚐</span> Véhicules</a>
       <a class="side-link {% if request.resolver_match.url_name == 'chauffeur_liste' %}active{% endif %}" href="{% url 'referentiel:chauffeur_liste' %}"><span class="ico">👤</span> Chauffeurs</a>

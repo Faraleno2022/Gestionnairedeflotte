@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "portechar",
     "depenses",
     "pointage",
+    "stock",
     "dashboard",
     "rapports",
     "sync",
@@ -184,4 +185,6 @@ SYNC_MODELS = [
     "depenses.AutreDepense",
     "pointage.Employe",
     "pointage.Pointage",
+    "stock.Article",
+    "stock.MouvementStock",
 ]

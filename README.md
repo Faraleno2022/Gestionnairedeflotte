@@ -109,6 +109,7 @@ côté serveur (accès aux vues).
 | Porte-char | Trajets de transport d'engins |
 | Autres dépenses | Dépenses diverses |
 | Pointage | Grille mensuelle de présence (statut par jour) + totaux automatiques ; gestion des employés |
+| Stock | Inventaire (stock calculé + statut OK/Alerte/Rupture), journal des mouvements entrées/sorties, synthèse ; import du classeur Excel |
 | Tableau de bord | KPI + graphiques filtrables par année |
 | Analyses | Par véhicule : distance, L/100 km, coût au km (carburant + entretien) |
 | Rapports | Export **Excel** (multi-feuilles) et **PDF** de synthèse, filtrables par année |
