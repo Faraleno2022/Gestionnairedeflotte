@@ -83,6 +83,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # WhiteNoise sert les fichiers statiques en production (CSS/JS/images)
+    # sans serveur web séparé. À placer juste après SecurityMiddleware.
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -132,7 +135,21 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Stockage des statiques : WhiteNoise (compression + cache-busting) en prod.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"
+    },
+}
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Origines de confiance pour le CSRF (formulaires POST en HTTPS).
+# Ex. : DJANGO_CSRF_TRUSTED=https://votrecompte.pythonanywhere.com
+CSRF_TRUSTED_ORIGINS = [
+    o for o in os.environ.get("DJANGO_CSRF_TRUSTED", "").split(",") if o
+]
 
 # --- Authentification / redirections -----------------------------------
 LOGIN_URL = "accounts:login"
