@@ -12,6 +12,7 @@ urlpatterns = [
     path("poclain/", include("poclain.urls")),
     path("porte-char/", include("portechar.urls")),
     path("depenses/", include("depenses.urls")),
+    path("pointage/", include("pointage.urls")),
     path("rapports/", include("rapports.urls")),
     path("", include("dashboard.urls")),
 ]

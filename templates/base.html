@@ -28,6 +28,10 @@
       <a class="side-link {% if request.resolver_match.namespace == 'portechar' %}active{% endif %}" href="{% url 'portechar:liste' %}"><span class="ico">🚛</span> Porte-char</a>
       <a class="side-link {% if request.resolver_match.namespace == 'depenses' %}active{% endif %}" href="{% url 'depenses:liste' %}"><span class="ico">💸</span> Autres dépenses</a>
 
+      <div class="side-section">Pointage</div>
+      <a class="side-link {% if request.resolver_match.url_name == 'grille' %}active{% endif %}" href="{% url 'pointage:grille' %}"><span class="ico">🗓️</span> Présence</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'employe_liste' %}active{% endif %}" href="{% url 'pointage:employe_liste' %}"><span class="ico">👥</span> Employés</a>
+
       <div class="side-section">Référentiel</div>
       <a class="side-link {% if request.resolver_match.url_name == 'vehicule_liste' %}active{% endif %}" href="{% url 'referentiel:vehicule_liste' %}"><span class="ico">🚐</span> Véhicules</a>
       <a class="side-link {% if request.resolver_match.url_name == 'chauffeur_liste' %}active{% endif %}" href="{% url 'referentiel:chauffeur_liste' %}"><span class="ico">👤</span> Chauffeurs</a>

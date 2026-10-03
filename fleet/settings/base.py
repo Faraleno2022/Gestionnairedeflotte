@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "poclain",
     "portechar",
     "depenses",
+    "pointage",
     "dashboard",
     "rapports",
     "sync",
@@ -181,4 +182,6 @@ SYNC_MODELS = [
     "poclain.ActiviteEngin",
     "portechar.TrajetPorteChar",
     "depenses.AutreDepense",
+    "pointage.Employe",
+    "pointage.Pointage",
 ]

@@ -82,6 +82,48 @@ body { font-size: 0.95rem; }
 .table thead th { white-space: nowrap; }
 .chart-box { position: relative; height: 300px; }
 
+/* ----------------- Grille de pointage ----------------- */
+.pointage-wrap { max-height: 72vh; overflow: auto; }
+.pointage-table { border-collapse: separate; border-spacing: 0; font-size: .82rem; }
+.pointage-table thead th {
+  position: sticky; top: 0; z-index: 3;
+  background: #0b2545; color: #fff; text-align: center;
+  vertical-align: middle; padding: 4px 6px; white-space: nowrap;
+}
+.pointage-table th.col-fixe, .pointage-table td.col-fixe {
+  position: sticky; left: 0; z-index: 2; background: #fff;
+  text-align: left; white-space: nowrap; max-width: 180px;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.pointage-table thead th.col-fixe { z-index: 4; background: #0b2545; }
+.col-nom  { left: 0 !important; min-width: 160px; }
+.col-mat  { left: 160px !important; min-width: 90px; }
+.col-fonc { left: 250px !important; min-width: 110px; }
+.col-serv { left: 360px !important; min-width: 110px; }
+.pointage-table td.col-fixe { border-right: 1px solid #dee2e6; }
+.col-jour { min-width: 34px; }
+.col-jour .jabbr { font-size: .7rem; opacity: .8; }
+.col-tot { background: #eef3fb; text-align: center; min-width: 46px; font-weight: 600; }
+.pointage-table td.cell { padding: 1px; text-align: center; }
+.pointage-table td.weekend, .pointage-table th.weekend { background: #f1f3f5; }
+.ptg-select {
+  border: none; background: transparent; width: 100%;
+  text-align: center; font-weight: 700; cursor: pointer;
+  -webkit-appearance: none; appearance: none; padding: 4px 2px;
+}
+.ptg-select:focus { outline: 2px solid var(--cab-primary); }
+
+/* Couleurs par statut */
+.st-P  { background: #d1e7dd; }   /* présent  */
+.st-A  { background: #f8d7da; }   /* absent   */
+.st-C  { background: #fff3cd; }   /* congé    */
+.st-M  { background: #cfe2ff; }   /* mission  */
+.st-R  { background: #e2e3e5; }   /* repos    */
+.st-ML { background: #e7d6f5; }   /* maladie  */
+
+/* Badges de légende */
+.legende .badge { color: #212529; margin-left: 6px; }
+
 /* ----------------- Responsive ----------------- */
 @media (max-width: 991.98px) {
   .sidebar { transform: translateX(-100%); }
