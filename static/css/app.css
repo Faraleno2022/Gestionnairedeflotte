@@ -124,11 +124,62 @@ body { font-size: 0.95rem; }
 /* Badges de légende */
 .legende .badge { color: #212529; margin-left: 6px; }
 
-/* ----------------- Responsive ----------------- */
+/* Défilement tactile fluide pour les tableaux larges */
+.table-responsive, .pointage-wrap { -webkit-overflow-scrolling: touch; }
+
+/* Les barres d'actions passent à la ligne quand la place manque */
+.actions-bar { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+/* ----------------- Responsive : tablette et moins ----------------- */
 @media (max-width: 991.98px) {
-  .sidebar { transform: translateX(-100%); }
+  .sidebar { transform: translateX(-100%); box-shadow: 2px 0 14px rgba(0,0,0,.25); }
   body.sidebar-open .sidebar { transform: translateX(0); }
   body.sidebar-open .sidebar-backdrop { display: block; }
   .topbar { left: 0; }
   .has-sidebar .content-wrap { margin-left: 0; }
+}
+
+/* ----------------- Responsive : téléphone ----------------- */
+@media (max-width: 575.98px) {
+  body { font-size: 0.9rem; }
+  .main-content { padding: 14px 10px; }
+
+  /* Barre du haut compacte */
+  .topbar { padding: 0 10px; gap: 6px; }
+  .topbar .btn { padding: .25rem .5rem; font-size: .8rem; }
+  .topbar .badge { font-size: .7rem; }
+
+  /* Titres de page */
+  h1.h4 { font-size: 1.1rem; }
+
+  /* Cartes KPI plus compactes (2 par ligne) */
+  .kpi-card .kpi-val { font-size: 1.15rem; }
+  .kpi-card .kpi-lbl { font-size: .68rem; }
+  .kpi-card .card-body { padding: .6rem .7rem; }
+
+  /* Graphiques un peu plus bas */
+  .chart-box { height: 240px; }
+
+  /* Cartes et tableaux plus denses */
+  .card-body { padding: .85rem; }
+  .table { font-size: .84rem; }
+  .table td, .table th { padding: .4rem .5rem; }
+
+  /* Boutons d'action pleine largeur et alignés */
+  .actions-bar .btn { flex: 1 1 auto; }
+
+  /* Grille de pointage : colonnes figées plus étroites -> plus de jours visibles */
+  .col-nom  { min-width: 118px; }
+  .col-mat  { left: 118px !important; min-width: 66px; }
+  .col-fonc { left: 184px !important; min-width: 84px; }
+  .col-serv { left: 268px !important; min-width: 84px; }
+  .pointage-table { font-size: .78rem; }
+  .pointage-wrap { max-height: 78vh; }
+}
+
+/* Confort tactile : zones cliquables un peu plus grandes */
+@media (hover: none) and (pointer: coarse) {
+  .side-link { padding-top: 11px; padding-bottom: 11px; }
+  .btn-sm { padding: .35rem .6rem; }
+  .form-control, .form-select { min-height: 40px; }
 }

@@ -5,7 +5,7 @@
 
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
   <h1 class="h4 mb-0">Inventaire — {{ lignes|length }} article(s)</h1>
-  <div class="d-flex gap-2">
+  <div class="actions-bar">
     <a class="btn btn-sm btn-outline-primary" href="{% url 'stock:synthese' %}">📊 Synthèse</a>
     <a class="btn btn-sm btn-outline-secondary" href="{% url 'stock:mouvement_liste' %}">🔁 Mouvements</a>
     {% if peut_saisir %}<a class="btn btn-sm btn-success" href="{% url 'stock:article_creer' %}">+ Article</a>{% endif %}
