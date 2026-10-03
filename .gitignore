@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.sqlite3
+.node_id
+staticfiles/
+.env
+
+# Document sans rapport avec le projet
+Programme_Formation_IA_Claude_2.docx
+*.docx

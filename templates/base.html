@@ -1,0 +1,87 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titre %}{{ titre|default:"Accueil" }}{% endblock %} — {{ APP_NAME }}</title>
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body class="bg-body-tertiary {% if user.is_authenticated %}has-sidebar{% endif %}">
+
+{% if user.is_authenticated %}
+  {# ---------- Barre latérale (navigation) ---------- #}
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <a href="{% url 'dashboard:accueil' %}">🚚 {{ APP_NAME }}</a>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="side-link {% if request.resolver_match.url_name == 'accueil' %}active{% endif %}" href="{% url 'dashboard:accueil' %}"><span class="ico">📊</span> Tableau de bord</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'analyses' %}active{% endif %}" href="{% url 'dashboard:analyses' %}"><span class="ico">📈</span> Analyses</a>
+
+      <div class="side-section">Saisie</div>
+      <a class="side-link {% if request.resolver_match.namespace == 'entretien' %}active{% endif %}" href="{% url 'entretien:liste' %}"><span class="ico">🔧</span> Entretien</a>
+      <a class="side-link {% if request.resolver_match.namespace == 'carburant' %}active{% endif %}" href="{% url 'carburant:liste' %}"><span class="ico">⛽</span> Carburant</a>
+      <a class="side-link {% if request.resolver_match.namespace == 'voyages' %}active{% endif %}" href="{% url 'voyages:liste' %}"><span class="ico">🧭</span> Voyages</a>
+      <a class="side-link {% if request.resolver_match.namespace == 'poclain' %}active{% endif %}" href="{% url 'poclain:liste' %}"><span class="ico">🚜</span> Poclain</a>
+      <a class="side-link {% if request.resolver_match.namespace == 'portechar' %}active{% endif %}" href="{% url 'portechar:liste' %}"><span class="ico">🚛</span> Porte-char</a>
+      <a class="side-link {% if request.resolver_match.namespace == 'depenses' %}active{% endif %}" href="{% url 'depenses:liste' %}"><span class="ico">💸</span> Autres dépenses</a>
+
+      <div class="side-section">Référentiel</div>
+      <a class="side-link {% if request.resolver_match.url_name == 'vehicule_liste' %}active{% endif %}" href="{% url 'referentiel:vehicule_liste' %}"><span class="ico">🚐</span> Véhicules</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'chauffeur_liste' %}active{% endif %}" href="{% url 'referentiel:chauffeur_liste' %}"><span class="ico">👤</span> Chauffeurs</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'categorie_liste' %}active{% endif %}" href="{% url 'referentiel:categorie_liste' %}"><span class="ico">🛞</span> Catégories de roues</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'engin_liste' %}active{% endif %}" href="{% url 'referentiel:engin_liste' %}"><span class="ico">🏗️</span> Engins</a>
+
+      <div class="side-section">Rapports</div>
+      <a class="side-link" href="{% url 'rapports:excel' %}"><span class="ico">📗</span> Export Excel</a>
+      <a class="side-link" href="{% url 'rapports:pdf' %}"><span class="ico">📕</span> Export PDF</a>
+    </nav>
+  </aside>
+
+  <header class="topbar">
+    <button class="btn btn-sm btn-outline-secondary d-lg-none" id="btn-menu" type="button">☰</button>
+    <div class="topbar-title d-none d-md-block">{% block barre_titre %}{{ titre }}{% endblock %}</div>
+    <div class="ms-auto d-flex align-items-center gap-2">
+      {% if IS_CLIENT %}
+        <span id="indic-connexion" class="badge bg-secondary">● Connexion…</span>
+        <a href="{% url 'sync:lancer' %}" class="btn btn-sm btn-primary">🔄 Synchroniser</a>
+      {% else %}
+        <span class="badge bg-info text-dark">Serveur central</span>
+      {% endif %}
+      <span class="text-muted small d-none d-sm-inline">{{ user.username }}</span>
+      <a href="{% url 'accounts:logout' %}" class="btn btn-sm btn-outline-danger">Déconnexion</a>
+    </div>
+  </header>
+
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+{% endif %}
+
+<div class="content-wrap">
+  <main class="main-content">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% block contenu %}{% endblock %}
+
+    {% if user.is_authenticated %}
+    <footer class="text-center text-muted small py-3 mt-4">
+      {{ APP_NAME }} — {% now "Y" %} · Nœud : <code>{{ NODE_ID }}</code> ({{ NODE_ROLE }})
+    </footer>
+    {% endif %}
+  </main>
+</div>
+
+<script src="{% static 'vendor/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/chart.umd.min.js' %}"></script>
+{% if user.is_authenticated %}<script src="{% static 'js/sidebar.js' %}"></script>{% endif %}
+{% if IS_CLIENT %}<script src="{% static 'js/connexion.js' %}"></script>{% endif %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load humanize static %}
+{% block titre %}Tableau de bord{% endblock %}
+{% block contenu %}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+  <h1 class="h4 mb-0">Tableau de bord — Gestion Parc Automobile</h1>
+  <form method="get" class="d-flex align-items-center gap-2">
+    <label class="form-label mb-0">Année</label>
+    <select name="annee" class="form-select form-select-sm" style="width:auto" onchange="this.form.submit()">
+      <option value="">Toutes</option>
+      {% for a in annees %}
+        <option value="{{ a }}" {% if a == annee %}selected{% endif %}>{{ a }}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>
+
+{% if etat_sync %}
+<div class="alert {% if etat_sync.last_error %}alert-warning{% else %}alert-light{% endif %} py-2 small">
+  {% if etat_sync.last_sync_ok %}Dernière synchro réussie : {{ etat_sync.last_sync_ok|date:"d/m/Y H:i" }}.{% else %}Aucune synchro effectuée pour l'instant.{% endif %}
+  {% if etat_sync.last_error %} Dernier incident : {{ etat_sync.last_error }}{% endif %}
+  {% if nb_conflits %} · <a href="/admin/sync/syncconflict/">{{ nb_conflits }} conflit(s) à revoir</a>{% endif %}
+</div>
+{% endif %}
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <div class="card kpi-card shadow-sm bg-primary text-white h-100"><div class="card-body">
+      <div class="kpi-lbl">Dépenses totales</div>
+      <div class="kpi-val">{{ kpi.depenses_totales|floatformat:0|intcomma }}</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card kpi-card shadow-sm bg-success text-white h-100"><div class="card-body">
+      <div class="kpi-lbl">Recettes voyages</div>
+      <div class="kpi-val">{{ kpi.recettes_voyages|floatformat:0|intcomma }}</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card kpi-card shadow-sm bg-dark text-white h-100"><div class="card-body">
+      <div class="kpi-lbl">Carburant (litres)</div>
+      <div class="kpi-val">{{ kpi.litres_carburant|floatformat:0|intcomma }}</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="card kpi-card shadow-sm bg-secondary text-white h-100"><div class="card-body">
+      <div class="kpi-lbl">Nombre de voyages</div>
+      <div class="kpi-val">{{ kpi.nb_voyages|intcomma }}</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h6">Répartition des dépenses</h2>
+      <div class="chart-box"><canvas id="c-repartition"></canvas></div>
+    </div></div>
+  </div>
+  <div class="col-lg-7">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h6">Charges par véhicule (entretien + carburant)</h2>
+      <div class="chart-box"><canvas id="c-vehicules"></canvas></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h6">Entretien vs Carburant par mois {% if annee %}({{ annee }}){% endif %}</h2>
+      <div class="chart-box"><canvas id="c-mois"></canvas></div>
+    </div></div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="h6">Voyages par véhicule</h2>
+      <div class="chart-box"><canvas id="c-voyages"></canvas></div>
+    </div></div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.DASH = {
+    repartition: {{ chart_repartition|safe }},
+    vehicules: {{ chart_vehicules|safe }},
+    voyages: {{ chart_voyages|safe }},
+    mois: {{ chart_mois|safe }}
+  };
+</script>
+<script src="{% static 'js/charts.js' %}"></script>
+{% endblock %}

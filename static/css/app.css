@@ -1,0 +1,92 @@
+:root { --sidebar-w: 240px; --topbar-h: 56px; --cab-primary: #0d6efd; }
+
+body { font-size: 0.95rem; }
+
+/* ----------------- Barre latérale ----------------- */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: #0b2545;
+  color: #cfe0ff;
+  overflow-y: auto;
+  z-index: 1040;
+  transition: transform .25s ease;
+}
+.sidebar-brand {
+  padding: 14px 16px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.sidebar-brand a { color: #fff; text-decoration: none; font-size: 1.05rem; }
+
+.sidebar-nav { padding: 8px 0 24px; }
+.side-section {
+  padding: 14px 16px 4px;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #7f9cc9;
+}
+.side-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  color: #cfe0ff;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  font-size: .92rem;
+}
+.side-link:hover { background: rgba(255,255,255,.06); color: #fff; }
+.side-link.active {
+  background: rgba(13,110,253,.25);
+  border-left-color: var(--cab-primary);
+  color: #fff;
+  font-weight: 600;
+}
+.side-link .ico { width: 1.3em; text-align: center; }
+
+/* ----------------- Barre du haut ----------------- */
+.topbar {
+  position: fixed;
+  top: 0; right: 0;
+  left: var(--sidebar-w);
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #e3e6ea;
+  z-index: 1030;
+}
+.topbar-title { font-weight: 600; }
+
+/* ----------------- Contenu ----------------- */
+.has-sidebar .content-wrap { margin-left: var(--sidebar-w); padding-top: var(--topbar-h); }
+.main-content { max-width: 1400px; margin: 0 auto; padding: 24px 16px; }
+
+/* Rideau (mobile) */
+.sidebar-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 1035;
+  display: none;
+}
+
+/* ----------------- Composants ----------------- */
+.kpi-card { border: none; border-radius: .75rem; }
+.kpi-card .kpi-val { font-size: 1.5rem; font-weight: 700; }
+.kpi-card .kpi-lbl { font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+.table thead th { white-space: nowrap; }
+.chart-box { position: relative; height: 300px; }
+
+/* ----------------- Responsive ----------------- */
+@media (max-width: 991.98px) {
+  .sidebar { transform: translateX(-100%); }
+  body.sidebar-open .sidebar { transform: translateX(0); }
+  body.sidebar-open .sidebar-backdrop { display: block; }
+  .topbar { left: 0; }
+  .has-sidebar .content-wrap { margin-left: 0; }
+}
