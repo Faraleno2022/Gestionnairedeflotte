@@ -1,0 +1,10 @@
+# Dépendances pour héberger le hub central avec MySQL (ex. PythonAnywhere).
+# Installe la base + le pilote MySQL :  pip install -r requirements-mysql.txt
+-r requirements.txt
+
+# Pilote officiel recommandé (disponible sur PythonAnywhere).
+mysqlclient>=2.2
+
+# Secours pur-Python si mysqlclient ne s'installe pas (activé via fleet/__init__.py).
+# Décommentez si besoin :
+# PyMySQL>=1.1

@@ -24,29 +24,52 @@ cd Gestionnairedeflotte
 
 ---
 
-## 2. Créer l'environnement virtuel et installer les dépendances
+## 2. Créer l'environnement virtuel et installer les dépendances (avec MySQL)
 
 ```bash
 python3.11 --version         # vérifiez qu'il existe (sinon python3.10/3.13)
 python3.11 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-mysql.txt
 ```
 
-> `psycopg` (PostgreSQL) peut échouer à s'installer sur le plan gratuit : ce
-> n'est pas grave, on utilise SQLite. Si l'installation bloque dessus, retirez
-> la ligne `psycopg[binary]` de `requirements.txt` puis relancez `pip install`.
+> `requirements-mysql.txt` installe l'application **et** le pilote MySQL
+> (`mysqlclient`). Si `mysqlclient` refuse de s'installer, faites plutôt
+> `pip install -r requirements.txt pymysql` : le projet bascule
+> automatiquement sur PyMySQL (voir `fleet/__init__.py`).
 
 ---
 
-## 3. Préparer la base de données (rôle serveur)
+## 2 bis. Créer la base de données MySQL
+Onglet **Databases** :
+1. Si ce n'est pas déjà fait, définissez un **mot de passe MySQL** (section
+   *MySQL password*) — notez-le.
+2. Dans *Create a database*, saisissez `flotte`. PythonAnywhere crée la base
+   nommée **`VOTRECOMPTE$flotte`** sur l'hôte
+   **`VOTRECOMPTE.mysql.pythonanywhere-services.com`**.
+
+---
+
+## 3. Préparer la base de données (rôle serveur, MySQL)
+
+Dans la **console Bash**, exportez les **mêmes** variables que le WSGI pour que
+les commandes visent bien MySQL (adaptez `VOTRECOMPTE` et le mot de passe) :
 
 ```bash
 export NODE_ROLE=server
+export MYSQL_DB='VOTRECOMPTE$flotte'
+export MYSQL_USER='VOTRECOMPTE'
+export MYSQL_PASSWORD='VOTRE_MOT_DE_PASSE_MYSQL'
+export MYSQL_HOST='VOTRECOMPTE.mysql.pythonanywhere-services.com'
+export MYSQL_PORT='3306'
+
 python manage.py migrate
 python manage.py init_roles --admin-user admin --admin-pass "UN_MOT_DE_PASSE_FORT"
 python manage.py collectstatic --noinput
 ```
+
+> ⚠️ Sans ces `export`, `migrate` créerait une base SQLite au lieu de MySQL.
+> Le `$` de `VOTRECOMPTE$flotte` impose les **guillemets simples**.
 
 Importer les données du classeur Excel (optionnel — téléversez d'abord le
 fichier via l'onglet **Files**) :
@@ -88,9 +111,11 @@ Dans la section **Code**, cliquez sur le lien **WSGI configuration file**.
 [`deploy/pythonanywhere_wsgi.py`](deploy/pythonanywhere_wsgi.py) de ce dépôt,
 en remplaçant :
 - `VOTRECOMPTE` par votre nom de compte,
-- la clé secrète par celle générée à l'étape 3.
+- la clé secrète par celle générée à l'étape 3,
+- `VOTRE_MOT_DE_PASSE_MYSQL` par votre mot de passe MySQL.
 
-Enregistrez.
+Le fichier WSGI contient déjà les variables `MYSQL_*` : l'application web
+utilisera donc MySQL automatiquement. Enregistrez.
 
 ---
 
@@ -141,12 +166,19 @@ cd ~/Gestionnairedeflotte
 source .venv/bin/activate
 git pull
 export NODE_ROLE=server
-pip install -r requirements.txt
+export MYSQL_DB='VOTRECOMPTE$flotte' MYSQL_USER='VOTRECOMPTE' \
+       MYSQL_PASSWORD='VOTRE_MOT_DE_PASSE_MYSQL' \
+       MYSQL_HOST='VOTRECOMPTE.mysql.pythonanywhere-services.com' MYSQL_PORT='3306'
+pip install -r requirements-mysql.txt
 python manage.py migrate
 python manage.py collectstatic --noinput
 ```
 
 Puis **Reload** dans l'onglet **Web**.
+
+> 💡 Astuce : placez ce bloc d'`export` dans un fichier `~/env_server.sh` et
+> faites `source ~/env_server.sh` au début de chaque console, pour ne pas les
+> retaper (y compris avant `appairer_poste`).
 
 ---
 
@@ -157,5 +189,12 @@ Puis **Reload** dans l'onglet **Web**.
 - **CSRF verification failed** : vérifiez `DJANGO_CSRF_TRUSTED`
   (`https://VOTRECOMPTE.pythonanywhere.com`).
 - **Erreur 502 / rien ne s'affiche** : consultez l'**Error log** (onglet Web).
-- **PostgreSQL** : non requis. Pour y passer plus tard (plan payant),
-  renseignez les variables `POSTGRES_*` dans le WSGI.
+- **`Access denied` / `Can't connect to MySQL`** : vérifiez le mot de passe et
+  l'hôte MySQL (`VOTRECOMPTE.mysql.pythonanywhere-services.com`) dans le WSGI,
+  et que la base `VOTRECOMPTE$flotte` a bien été créée (onglet Databases).
+- **`No module named 'MySQLdb'`** : le pilote n'est pas installé dans le venv →
+  `pip install -r requirements-mysql.txt` (ou `pip install pymysql`).
+- **Tables manquantes** : vous avez lancé `migrate` sans les `export MYSQL_*`
+  (il a visé SQLite). Ré-exportez les variables puis relancez `migrate`.
+- **PostgreSQL** : non requis ici. Pour y passer plus tard, renseignez plutôt
+  les variables `POSTGRES_*` (MySQL est prioritaire s'il est défini).

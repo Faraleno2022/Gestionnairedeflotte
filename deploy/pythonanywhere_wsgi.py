@@ -24,5 +24,13 @@ os.environ["DJANGO_SECRET_KEY"] = "COLLEZ_ICI_UNE_CLE_SECRETE_GENEREE"
 os.environ["DJANGO_ALLOWED_HOSTS"] = "VOTRECOMPTE.pythonanywhere.com"
 os.environ["DJANGO_CSRF_TRUSTED"] = "https://VOTRECOMPTE.pythonanywhere.com"
 
-# 3) Démarrage de l'application Django
+# 3) Base de données MySQL (onglet "Databases" de PythonAnywhere)
+#    Adaptez VOTRECOMPTE et le mot de passe MySQL que vous avez défini.
+os.environ["MYSQL_DB"] = "VOTRECOMPTE$flotte"
+os.environ["MYSQL_USER"] = "VOTRECOMPTE"
+os.environ["MYSQL_PASSWORD"] = "VOTRE_MOT_DE_PASSE_MYSQL"
+os.environ["MYSQL_HOST"] = "VOTRECOMPTE.mysql.pythonanywhere-services.com"
+os.environ["MYSQL_PORT"] = "3306"
+
+# 4) Démarrage de l'application Django
 from fleet.wsgi import application  # noqa: E402
