@@ -74,7 +74,8 @@ def construire(annee=None):
 
     # --- Feuilles de données brutes ---
     def filtrer(qs):
-        return qs.filter(date__year=annee) if annee else qs
+        # .all() garantit un QuerySet itérable même si on reçoit un Manager.
+        return qs.filter(date__year=annee) if annee else qs.all()
 
     _ecrire_tableau(
         wb.create_sheet("Entretien"),

@@ -116,7 +116,11 @@ class ConformiteClasseurTests(TestCase):
             "/rapports/carburant/?annee=2021&unite=montant",
             "/rapports/poclain/?annee=2021&mois=12",
             "/rapports/excel/?annee=2021",
+            "/rapports/excel/",            # lien du menu : sans année
             "/rapports/pdf/?annee=2021",
+            "/rapports/pdf/",
+            "/rapports/mensuel/",
+            "/rapports/poclain/",
         ]:
             with self.subTest(url=url):
                 self.assertEqual(self.client.get(url).status_code, 200)
