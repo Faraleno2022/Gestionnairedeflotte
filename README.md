@@ -1,4 +1,4 @@
-# Gestion de Flotte CAB
+# Gestion de flotte
 
 Application de gestion de flotte (véhicules, entretien, carburant, voyages,
 Poclain, porte-char, dépenses) **fonctionnant hors connexion** sur chaque

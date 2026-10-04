@@ -46,7 +46,7 @@ def construire(annee=None) -> bytes:
     styles = getSampleStyleSheet()
     elements = []
 
-    elements.append(Paragraph("Gestion de Flotte CAB — Rapport de synthèse", styles["Title"]))
+    elements.append(Paragraph("Gestion de flotte — Rapport de synthèse", styles["Title"]))
     elements.append(Paragraph(f"Année : {annee or 'Toutes'}", styles["Normal"]))
     elements.append(Spacer(1, 0.5 * cm))
 

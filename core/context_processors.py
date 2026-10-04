@@ -7,7 +7,7 @@ def app_context(request):
     """Variables disponibles dans tous les templates."""
     user = getattr(request, "user", None)
     return {
-        "APP_NAME": "Gestion de Flotte CAB",
+        "APP_NAME": "Gestion de flotte",
         "NODE_ROLE": settings.NODE_ROLE,
         "NODE_ID": settings.NODE_ID,
         "IS_SERVER": settings.NODE_ROLE == "server",

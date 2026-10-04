@@ -34,7 +34,7 @@ def construire(annee=None):
     # --- Synthèse ---
     ws = wb.active
     ws.title = "Synthèse"
-    ws["A1"] = "Gestion de Flotte CAB — Synthèse"
+    ws["A1"] = "Gestion de flotte — Synthèse"
     ws["A1"].font = _TITRE
     ws["A2"] = f"Année : {annee or 'Toutes'}"
     t = services.totaux(annee)
