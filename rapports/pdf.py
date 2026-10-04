@@ -54,14 +54,17 @@ def construire(annee=None) -> bytes:
     t = services.totaux(annee)
     synth = [
         ["Indicateur", "Valeur"],
-        ["Dépenses totales", _fmt(float(t["depenses_totales"]))],
+        ["Carburant véhicules", _fmt(float(t["carburant_vehicules"]))],
+        ["Carburant Poclain", _fmt(float(t["carburant_poclain"]))],
         ["Entretien", _fmt(float(t["montant_entretien"]))],
-        ["Carburant (montant)", _fmt(float(t["montant_carburant"]))],
-        ["Carburant (litres)", _fmt(float(t["litres_carburant"]))],
-        ["Poclain", _fmt(float(t["montant_poclain"]))],
-        ["Porte-char", _fmt(float(t["montant_portechar"]))],
-        ["Autres dépenses", _fmt(float(t["montant_depenses"]))],
-        ["Recettes voyages", _fmt(float(t["montant_voyages"]))],
+        ["Autres dépenses", _fmt(float(t["montant_autres"]))],
+        ["TOTAL DÉPENSES", _fmt(float(t["depenses_totales"]))],
+        ["Voyages camions", _fmt(float(t["recettes_voyages"]))],
+        ["Porte-char", _fmt(float(t["recettes_portechar"]))],
+        ["Chargements Poclain", _fmt(float(t["recettes_poclain"]))],
+        ["TOTAL RECETTES", _fmt(float(t["recettes_totales"]))],
+        ["RÉSULTAT (recettes − dépenses)", _fmt(float(t["resultat"]))],
+        ["Carburant consommé (litres)", _fmt(float(t["litres_carburant"]))],
         ["Nombre de voyages", _fmt(t["nb_voyages"])],
     ]
     elements.append(Paragraph("Synthèse générale", styles["Heading2"]))

@@ -12,6 +12,7 @@ class ActiviteListe(BaseListe):
     colonnes = [
         ("Date", "date"),
         ("Engin", "engin"),
+        ("Roues", "categorie_roues"),
         ("Nb chargements", "nb_chargement"),
         ("Montant chargement", "montant_chargement"),
         ("Carburant (L)", "qte_carburant"),
@@ -22,7 +23,7 @@ class ActiviteListe(BaseListe):
     url_supprimer = "poclain:supprimer"
 
     def get_queryset(self):
-        return super().get_queryset().select_related("engin")
+        return super().get_queryset().select_related("engin", "categorie_roues")
 
 
 class ActiviteCreer(BaseCreer):

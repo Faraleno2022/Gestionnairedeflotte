@@ -211,8 +211,16 @@ class Command(BaseCommand):
                     d = to_date(g(row, "Date"))
                     if not d:
                         continue
+                    # « Colonne1 » = catégorie de roues des camions chargés.
+                    roues = str(g(row, "Colonne1") or "").strip()
+                    cat = None
+                    if roues:
+                        cat = CategorieRoues.all_objects.filter(libelle=roues).first()
+                        if not cat:
+                            cat = CategorieRoues(libelle=roues)
+                            cat.save()
                     ActiviteEngin(
-                        date=d, engin=engin,
+                        date=d, engin=engin, categorie_roues=cat,
                         nb_chargement=to_int(g(row, "Nb de Chargement")),
                         pu_chargement=to_decimal(g(row, "PU/Chargement")),
                         qte_carburant=to_decimal(g(row, "Qté Carburant")),

@@ -39,15 +39,22 @@ def construire(annee=None):
     ws["A2"] = f"Année : {annee or 'Toutes'}"
     t = services.totaux(annee)
     _ecrire_tableau(ws, ["Indicateur", "Valeur"], [
-        ["Dépenses totales", float(t["depenses_totales"])],
+        ["DÉPENSES", None],
+        ["Carburant véhicules", float(t["carburant_vehicules"])],
+        ["Carburant Poclain", float(t["carburant_poclain"])],
         ["Entretien", float(t["montant_entretien"])],
-        ["Carburant (montant)", float(t["montant_carburant"])],
-        ["Carburant (litres)", float(t["litres_carburant"])],
-        ["Poclain", float(t["montant_poclain"])],
-        ["Porte-char", float(t["montant_portechar"])],
-        ["Autres dépenses", float(t["montant_depenses"])],
-        ["Recettes voyages", float(t["montant_voyages"])],
+        ["Autres dépenses", float(t["montant_autres"])],
+        ["Total dépenses", float(t["depenses_totales"])],
+        ["RECETTES", None],
+        ["Voyages camions", float(t["recettes_voyages"])],
+        ["Porte-char", float(t["recettes_portechar"])],
+        ["Chargements Poclain", float(t["recettes_poclain"])],
+        ["Total recettes", float(t["recettes_totales"])],
+        ["RÉSULTAT (recettes − dépenses)", float(t["resultat"])],
+        ["ACTIVITÉ", None],
+        ["Carburant consommé (litres)", float(t["litres_carburant"])],
         ["Nombre de voyages", t["nb_voyages"]],
+        ["Nombre de chargements Poclain", t["nb_chargements"]],
         ["Nombre de véhicules", t["nb_vehicules"]],
     ], depart=4)
 

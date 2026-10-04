@@ -169,6 +169,18 @@ REST_FRAMEWORK = {
     ],
 }
 
+# --- Identité de l'entreprise et signature des rapports imprimés ---------
+# (valeurs reprises du classeur d'origine, modifiables par variables d'env.)
+ENTREPRISE_NOM = os.environ.get("ENTREPRISE_NOM", "CAB SARLU")
+ENTREPRISE_CONTACT = os.environ.get(
+    "ENTREPRISE_CONTACT", "cabsarlu2@gmail.com · 00224 628 92 01 81"
+)
+RAPPORT_LIEU = os.environ.get("RAPPORT_LIEU", "Siguiri")
+RAPPORT_SIGNATAIRE_TITRE = os.environ.get(
+    "RAPPORT_SIGNATAIRE_TITRE", "Directeur Général Adjoint"
+)
+RAPPORT_SIGNATAIRE_NOM = os.environ.get("RAPPORT_SIGNATAIRE_NOM", "Bamba Brahima")
+
 # Modèles participant à la synchronisation, dans l'ordre de dépendance
 # (les référentiels d'abord : ils sont référencés par les autres).
 # Format : "app_label.ModelName".

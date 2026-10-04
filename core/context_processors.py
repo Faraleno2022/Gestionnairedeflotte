@@ -14,4 +14,9 @@ def app_context(request):
         "IS_CLIENT": settings.NODE_ROLE == "client",
         "PEUT_SAISIR": peut_saisir(user) if user else False,
         "PEUT_GERER_REFERENTIEL": peut_gerer_referentiel(user) if user else False,
+        "ENTREPRISE_NOM": settings.ENTREPRISE_NOM,
+        "ENTREPRISE_CONTACT": settings.ENTREPRISE_CONTACT,
+        "RAPPORT_LIEU": settings.RAPPORT_LIEU,
+        "RAPPORT_SIGNATAIRE_TITRE": settings.RAPPORT_SIGNATAIRE_TITRE,
+        "RAPPORT_SIGNATAIRE_NOM": settings.RAPPORT_SIGNATAIRE_NOM,
     }

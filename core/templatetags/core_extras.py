@@ -1,6 +1,24 @@
+import json
+
 from django import template
+from django.utils.safestring import mark_safe
 
 register = template.Library()
+
+
+@register.simple_tag
+def map_chauffeur_vehicule():
+    """
+    JSON {id_chauffeur: id_vehicule} d'après le chauffeur attitré de chaque
+    véhicule. Sert à pré-remplir le véhicule quand on choisit le chauffeur,
+    comme la RECHERCHEV du classeur d'origine.
+    """
+    from referentiel.models import Vehicule
+
+    data = {}
+    for v in Vehicule.objects.exclude(chauffeur_actuel=None).values("pk", "chauffeur_actuel"):
+        data.setdefault(str(v["chauffeur_actuel"]), str(v["pk"]))
+    return mark_safe(json.dumps(data))
 
 
 @register.filter

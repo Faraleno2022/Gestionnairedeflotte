@@ -45,6 +45,10 @@
       <a class="side-link {% if request.resolver_match.url_name == 'engin_liste' %}active{% endif %}" href="{% url 'referentiel:engin_liste' %}"><span class="ico">🏗️</span> Engins</a>
 
       <div class="side-section">Rapports</div>
+      <a class="side-link {% if request.resolver_match.url_name == 'mensuel' %}active{% endif %}" href="{% url 'rapports:mensuel' %}"><span class="ico">🗒️</span> Rapport mensuel</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'charges_entretien' %}active{% endif %}" href="{% url 'rapports:charges_entretien' %}"><span class="ico">🧾</span> Charges entretien</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'carburant' and request.resolver_match.namespace == 'rapports' %}active{% endif %}" href="{% url 'rapports:carburant' %}"><span class="ico">🛢️</span> Conso. carburant</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'poclain' %}active{% endif %}" href="{% url 'rapports:poclain' %}"><span class="ico">🏗️</span> Analyse Poclain</a>
       <a class="side-link" href="{% url 'rapports:excel' %}"><span class="ico">📗</span> Export Excel</a>
       <a class="side-link" href="{% url 'rapports:pdf' %}"><span class="ico">📕</span> Export PDF</a>
     </nav>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load core_extras %}
 {% block titre %}{{ titre }}{% endblock %}
 {% block contenu %}
 <div class="row justify-content-center">
@@ -32,4 +33,26 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+{% if "chauffeur" in form.fields and "vehicule" in form.fields %}
+<script>
+  // Pré-remplissage chauffeur <-> véhicule (comme la RECHERCHEV du classeur).
+  (function () {
+    var map = {% map_chauffeur_vehicule %};
+    var ch = document.getElementById("{{ form.chauffeur.id_for_label }}");
+    var ve = document.getElementById("{{ form.vehicule.id_for_label }}");
+    if (!ch || !ve) return;
+    var inverse = {};
+    Object.keys(map).forEach(function (k) { inverse[map[k]] = k; });
+    ch.addEventListener("change", function () {
+      if (map[ch.value]) ve.value = map[ch.value];
+    });
+    ve.addEventListener("change", function () {
+      if (!ch.value && inverse[ve.value]) ch.value = inverse[ve.value];
+    });
+  })();
+</script>
+{% endif %}
 {% endblock %}

@@ -2,28 +2,56 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils import timezone
 
 from sync.models import NodeState, SyncConflict
 
 from . import services
 
 
+def lire_periode(request, annees):
+    """
+    Lit ?annee= et ?mois= dans la requête.
+
+    Par défaut : l'année courante si elle a des données, sinon la plus
+    récente ; le mois courant pour l'année en cours, décembre sinon.
+    """
+    aujourdhui = timezone.localdate()
+    a = request.GET.get("annee")
+    if a and a.isdigit():
+        annee = int(a)
+    elif aujourdhui.year in annees or not annees:
+        annee = aujourdhui.year
+    else:
+        annee = annees[-1]
+    m = request.GET.get("mois")
+    if m and m.isdigit() and 1 <= int(m) <= 12:
+        mois = int(m)
+    else:
+        mois = aujourdhui.month if annee == aujourdhui.year else 12
+    return annee, mois
+
+
 @login_required
 def accueil(request):
     annees = services.annees_disponibles()
-    annee = request.GET.get("annee")
-    annee = int(annee) if (annee and annee.isdigit()) else (annees[-1] if annees else None)
+    annee, mois = lire_periode(request, annees)
+    if annee not in annees:
+        annees = sorted(set(annees) | {annee})
 
-    kpi = services.totaux(annee)
     contexte = {
         "titre": "Tableau de bord",
         "annees": annees,
         "annee": annee,
-        "kpi": kpi,
+        "mois": mois,
+        "mois_liste": list(enumerate(services.MOIS_NOMS, start=1)),
+        "kpi": services.totaux(annee),
+        "gestion": services.gestion(annee, mois),
         "chart_repartition": json.dumps(services.repartition_depenses(annee)),
+        "chart_recettes": json.dumps(services.repartition_recettes(annee)),
         "chart_vehicules": json.dumps(services.charges_par_vehicule(annee)),
         "chart_voyages": json.dumps(services.voyages_par_vehicule(annee)),
-        "chart_mois": json.dumps(services.depenses_par_mois(annee)) if annee else "null",
+        "chart_mois": json.dumps(services.recettes_depenses_par_mois(annee)),
         "etat_sync": _etat_sync(),
         "nb_conflits": SyncConflict.objects.count(),
     }

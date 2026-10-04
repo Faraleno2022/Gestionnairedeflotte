@@ -110,9 +110,18 @@ côté serveur (accès aux vues).
 | Autres dépenses | Dépenses diverses |
 | Pointage | Grille mensuelle de présence (statut par jour) + totaux automatiques ; gestion des employés |
 | Stock | Inventaire (stock calculé + statut OK/Alerte/Rupture), journal des mouvements entrées/sorties, synthèse ; import du classeur Excel |
-| Tableau de bord | KPI + graphiques filtrables par année |
+| Tableau de bord | Tableau de bord de gestion (dépenses / recettes / résultat, mensuel et annuel) + graphiques, filtres mois et année |
 | Analyses | Par véhicule : distance, L/100 km, coût au km (carburant + entretien) |
-| Rapports | Export **Excel** (multi-feuilles) et **PDF** de synthèse, filtrables par année |
+| Rapport mensuel | Tonnage et carburant par camion (mois + jour), stats journalières, imprimable avec signature |
+| Charges entretien | Matrice véhicule × mois (+ total tous véhicules), filtre véhicule |
+| Conso. carburant | Matrice véhicule/engin × mois, en litres ou en montant |
+| Analyse Poclain | Chargements et recettes par nombre de roues, carburant, activité journalière |
+| Exports | **Excel** (multi-feuilles) et **PDF** de synthèse, filtrables par année |
+
+> Classement repris du classeur d'origine (feuille `TB_Gestion`) : le montant
+> payé du **porte-char** et les **chargements du Poclain** sont des **recettes** ;
+> le carburant (véhicules + Poclain), l'entretien et les autres dépenses sont
+> des **dépenses**. Le résultat = recettes − dépenses.
 
 ---
 
