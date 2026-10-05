@@ -8,6 +8,7 @@ def app_context(request):
     user = getattr(request, "user", None)
     return {
         "APP_NAME": "Gestion de flotte",
+        "APP_SOUS_TITRE": "FASTLANE LOGISTIC",
         "NODE_ROLE": settings.NODE_ROLE,
         "NODE_ID": settings.NODE_ID,
         "IS_SERVER": settings.NODE_ROLE == "server",

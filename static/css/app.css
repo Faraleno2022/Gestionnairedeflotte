@@ -19,6 +19,7 @@ body { font-size: 0.95rem; }
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .sidebar-brand a { color: #fff; text-decoration: none; font-size: 1.05rem; }
+.sidebar-subtitle { font-size: .68rem; font-weight: 600; letter-spacing: .12em; color: #7f9cc9; margin-top: 2px; }
 
 .sidebar-nav { padding: 8px 0 24px; }
 .side-section {

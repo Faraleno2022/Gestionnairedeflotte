@@ -16,6 +16,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <a href="{% url 'dashboard:accueil' %}">{{ APP_NAME }}</a>
+      <div class="sidebar-subtitle">{{ APP_SOUS_TITRE }}</div>
     </div>
     <nav class="sidebar-nav">
       <a class="side-link {% if request.resolver_match.url_name == 'accueil' %}active{% endif %}" href="{% url 'dashboard:accueil' %}"><span class="ico">📊</span> Tableau de bord</a>

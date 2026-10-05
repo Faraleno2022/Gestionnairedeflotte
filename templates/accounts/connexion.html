@@ -5,7 +5,8 @@
   <div class="col-md-5 col-lg-4">
     <div class="card shadow-sm mt-5">
       <div class="card-body p-4">
-        <h1 class="h4 text-center mb-4">{{ APP_NAME }}</h1>
+        <h1 class="h4 text-center mb-1">{{ APP_NAME }}</h1>
+        <div class="text-center text-muted small fw-semibold mb-4" style="letter-spacing:.12em">{{ APP_SOUS_TITRE }}</div>
         {% if form.errors %}
           <div class="alert alert-danger">Identifiants incorrects. Réessayez.</div>
         {% endif %}
