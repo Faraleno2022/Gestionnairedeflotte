@@ -121,6 +121,8 @@ body { font-size: 0.95rem; }
 .st-M  { background: #cfe2ff; }   /* mission  */
 .st-R  { background: #e2e3e5; }   /* repos    */
 .st-ML { background: #e7d6f5; }   /* maladie  */
+.st-RT { background: #ffe5d0; }   /* retard   */
+.st-S  { background: #f1aeb5; }   /* sanction */
 
 /* Badges de légende */
 .legende .badge { color: #212529; margin-left: 6px; }

@@ -30,6 +30,8 @@ class EmployeListe(BaseListe):
         ("Matricule", "matricule"),
         ("Fonction", "fonction"),
         ("Service", "service"),
+        ("Téléphone", "telephone"),
+        ("N° de permis", "numero_permis"),
         ("Actif", "actif"),
     ]
     url_creer = "pointage:employe_creer"
@@ -74,6 +76,8 @@ def totaux_employe(emp, annee, mois) -> dict:
         "nb_mission": compteur[Pointage.MISSION],
         "nb_repos": compteur[Pointage.REPOS],
         "nb_maladie": compteur[Pointage.MALADIE],
+        "nb_retard": compteur[Pointage.RETARD],
+        "nb_sanction": compteur[Pointage.SANCTION],
     }
 
 
@@ -191,4 +195,6 @@ def enregistrer(request):
         "nb_mission": t["nb_mission"],
         "nb_repos": t["nb_repos"],
         "nb_maladie": t["nb_maladie"],
+        "nb_retard": t["nb_retard"],
+        "nb_sanction": t["nb_sanction"],
     })

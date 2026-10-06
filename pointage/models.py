@@ -17,6 +17,8 @@ class Employe(SyncModel):
     matricule = models.CharField("Matricule", max_length=40)
     fonction = models.CharField("Fonction", max_length=100, blank=True)
     service = models.CharField("Service / Département", max_length=100, blank=True)
+    telephone = models.CharField("Téléphone", max_length=30, blank=True)
+    numero_permis = models.CharField("N° de permis", max_length=40, blank=True)
     actif = models.BooleanField("Actif", default=True)
 
     class Meta:
@@ -43,6 +45,8 @@ class Pointage(SyncModel):
     MISSION = "M"
     REPOS = "R"
     MALADIE = "ML"
+    RETARD = "RT"
+    SANCTION = "S"
 
     STATUTS = [
         (PRESENT, "Présent"),
@@ -51,9 +55,12 @@ class Pointage(SyncModel):
         (MISSION, "Mission"),
         (REPOS, "Repos"),
         (MALADIE, "Maladie"),
+        (RETARD, "Retard"),
+        (SANCTION, "Sanction"),
     ]
-    # Statuts comptés comme "présence effective" pour les totaux.
-    STATUTS_PRESENCE = {PRESENT, MISSION}
+    # Statuts comptés comme "présence effective" pour les totaux
+    # (un employé en retard est venu travailler).
+    STATUTS_PRESENCE = {PRESENT, MISSION, RETARD}
 
     employe = models.ForeignKey(
         Employe, verbose_name="Employé", on_delete=models.CASCADE,

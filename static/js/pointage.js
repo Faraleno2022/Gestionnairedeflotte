@@ -21,6 +21,8 @@
     set(".tot-mission", d.nb_mission);
     set(".tot-repos", d.nb_repos);
     set(".tot-maladie", d.nb_maladie);
+    set(".tot-retard", d.nb_retard);
+    set(".tot-sanction", d.nb_sanction);
   }
 
   document.querySelectorAll(".ptg-select").forEach(function (sel) {
