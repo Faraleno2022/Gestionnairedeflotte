@@ -59,3 +59,28 @@ class PointageTests(TestCase):
             "employe": str(self.emp.id), "date": "2026-10-01", "statut": "P",
         })
         self.assertEqual(r.status_code, 403)
+
+    def test_retard_et_sanction(self):
+        """Retard compte comme présence ; Sanction est comptée à part."""
+        from django.contrib.auth.models import User
+        self.client.force_login(User.objects.create_superuser("chef", password="x"))
+        url = "/pointage/enregistrer/"
+        r = self.client.post(url, {"employe": str(self.emp.id), "date": "2026-10-01", "statut": "RT"})
+        self.assertEqual(r.json()["nb_retard"], 1)
+        self.assertEqual(r.json()["nb_presence"], 1)
+        r = self.client.post(url, {"employe": str(self.emp.id), "date": "2026-10-02", "statut": "S"})
+        self.assertEqual(r.json()["nb_sanction"], 1)
+        self.assertEqual(r.json()["nb_presence"], 1)
+        r = self.client.get("/pointage/?mois=2026-10")
+        self.assertContains(r, '<option value="RT" title="Retard" selected>')
+        self.assertContains(r, "Sanction")
+
+    def test_liste_employes_telephone_permis(self):
+        from django.contrib.auth.models import User
+        self.emp.telephone = "628 92 01 81"
+        self.emp.numero_permis = "GN-123456"
+        self.emp.save()
+        self.client.force_login(User.objects.create_superuser("chef", password="x"))
+        r = self.client.get("/pointage/employes/")
+        self.assertContains(r, "<th>Téléphone</th>", html=False)
+        self.assertContains(r, "GN-123456")

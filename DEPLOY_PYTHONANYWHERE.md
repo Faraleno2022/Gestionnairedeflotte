@@ -129,6 +129,11 @@ Onglet **Web** → section **Static files**, ajoutez une entrée :
 > WhiteNoise sert déjà les statiques, mais cette entrée accélère leur
 > distribution. Les deux fonctionnent ensemble.
 
+> 🔒 **Documents des véhicules** (cartes grises, assurances…) : ils sont
+> enregistrés dans `media/` et servis uniquement aux utilisateurs connectés.
+> N'ajoutez **pas** d'entrée `/media/` dans *Static files* (elle les rendrait
+> publics). Pensez à sauvegarder ce dossier avec la base de données.
+
 ---
 
 ## 7. Démarrer

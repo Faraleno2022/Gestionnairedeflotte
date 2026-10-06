@@ -41,6 +41,8 @@
 
       <div class="side-section">Référentiel</div>
       <a class="side-link {% if request.resolver_match.url_name == 'vehicule_liste' %}active{% endif %}" href="{% url 'referentiel:vehicule_liste' %}"><span class="ico">🚐</span> Véhicules</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'document_liste' %}active{% endif %}" href="{% url 'referentiel:document_liste' %}"><span class="ico">📄</span> Documents{% if NB_ALERTES_DOCUMENTS %} <span class="badge rounded-pill bg-danger ms-auto" title="Documents expirés ou à renouveler">{{ NB_ALERTES_DOCUMENTS }}</span>{% endif %}</a>
+      <a class="side-link {% if request.resolver_match.url_name == 'marque_liste' %}active{% endif %}" href="{% url 'referentiel:marque_liste' %}"><span class="ico">🏷️</span> Marques</a>
       <a class="side-link {% if request.resolver_match.url_name == 'chauffeur_liste' %}active{% endif %}" href="{% url 'referentiel:chauffeur_liste' %}"><span class="ico">👤</span> Chauffeurs</a>
       <a class="side-link {% if request.resolver_match.url_name == 'categorie_liste' %}active{% endif %}" href="{% url 'referentiel:categorie_liste' %}"><span class="ico">🛞</span> Catégories de roues</a>
       <a class="side-link {% if request.resolver_match.url_name == 'engin_liste' %}active{% endif %}" href="{% url 'referentiel:engin_liste' %}"><span class="ico">🏗️</span> Engins</a>

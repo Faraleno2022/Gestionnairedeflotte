@@ -7,7 +7,7 @@
     <h1 class="h4 mb-3">{{ titre }}</h1>
     <div class="card shadow-sm">
       <div class="card-body">
-        <form method="post" novalidate>
+        <form method="post" novalidate{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
           {% csrf_token %}
           {% if form.non_field_errors %}
             <div class="alert alert-danger">{{ form.non_field_errors }}</div>

@@ -20,4 +20,17 @@ def app_context(request):
         "RAPPORT_LIEU": settings.RAPPORT_LIEU,
         "RAPPORT_SIGNATAIRE_TITRE": settings.RAPPORT_SIGNATAIRE_TITRE,
         "RAPPORT_SIGNATAIRE_NOM": settings.RAPPORT_SIGNATAIRE_NOM,
+        "NB_ALERTES_DOCUMENTS": _nb_alertes_documents(user),
     }
+
+
+def _nb_alertes_documents(user):
+    """Nombre de documents véhicules expirés ou bientôt expirés (barre latérale)."""
+    if not (user and user.is_authenticated):
+        return 0
+    from referentiel.models import DocumentVehicule
+
+    try:
+        return DocumentVehicule.en_alerte().count()
+    except Exception:  # base pas encore migrée
+        return 0

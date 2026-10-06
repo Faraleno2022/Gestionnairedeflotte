@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils import timezone
 
+from referentiel.models import DocumentVehicule
 from sync.models import NodeState, SyncConflict
 
 from . import services
@@ -54,6 +55,7 @@ def accueil(request):
         "chart_mois": json.dumps(services.recettes_depenses_par_mois(annee)),
         "etat_sync": _etat_sync(),
         "nb_conflits": SyncConflict.objects.count(),
+        "alertes_documents": list(DocumentVehicule.en_alerte()[:10]),
     }
     return render(request, "dashboard/accueil.html", contexte)
 

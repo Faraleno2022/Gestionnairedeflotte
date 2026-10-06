@@ -25,10 +25,11 @@
             <td>{{ objet|call_attr:attr }}</td>
           {% endfor %}
           <td class="text-end text-nowrap">
+            {% if url_detail %}<a class="btn btn-sm btn-outline-secondary" href="{% url url_detail objet.pk %}">{{ libelle_detail }}</a>{% endif %}
             {% if peut_editer %}
               {% if url_modifier %}<a class="btn btn-sm btn-outline-primary" href="{% url url_modifier objet.pk %}">Modifier</a>{% endif %}
               {% if url_supprimer %}<a class="btn btn-sm btn-outline-danger" href="{% url url_supprimer objet.pk %}">Supprimer</a>{% endif %}
-            {% else %}
+            {% elif not url_detail %}
               <span class="text-muted small">—</span>
             {% endif %}
           </td>
