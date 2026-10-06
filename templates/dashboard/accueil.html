@@ -27,6 +27,32 @@
 </div>
 {% endif %}
 
+{% if alertes_documents %}
+<div class="card shadow-sm border-danger mb-4">
+  <div class="card-body">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+      <h2 class="h6 mb-0 text-danger">⚠️ Documents expirés ou à renouveler ({{ NB_ALERTES_DOCUMENTS }})</h2>
+      <a href="{% url 'referentiel:document_liste' %}?statut=alerte" class="btn btn-sm btn-outline-danger">Tout voir</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle mb-0">
+        <thead><tr><th>Véhicule</th><th>Document</th><th>Expire le</th><th>État</th></tr></thead>
+        <tbody>
+          {% for d in alertes_documents %}
+          <tr>
+            <td><a href="{% url 'referentiel:vehicule_detail' d.vehicule_id %}">{{ d.vehicule }}</a></td>
+            <td>{{ d.get_type_document_display }}</td>
+            <td>{{ d.date_expiration|date:"d/m/Y" }}</td>
+            <td>{{ d.statut_badge }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 {# ---------- Indicateurs annuels ---------- #}
 <div class="row g-3 mb-4">
   <div class="col-6 col-lg-3">

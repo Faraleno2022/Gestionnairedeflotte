@@ -45,6 +45,8 @@ class BaseListe(RoleRequisMixin, ListView):
     url_creer = None
     url_modifier = None
     url_supprimer = None
+    url_detail = None            # bouton de consultation (visible par tous)
+    libelle_detail = "Détail"
     # Droit requis pour éditer depuis cette liste : "saisir" ou "referentiel".
     permission_edition = "saisir"
 
@@ -60,6 +62,8 @@ class BaseListe(RoleRequisMixin, ListView):
             url_creer=self.url_creer,
             url_modifier=self.url_modifier,
             url_supprimer=self.url_supprimer,
+            url_detail=self.url_detail,
+            libelle_detail=self.libelle_detail,
             peut_editer=peut_editer,
         )
         return ctx

@@ -137,6 +137,16 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# --- Pièces jointes (documents des véhicules) ---------------------------
+# Jamais servies publiquement : elles passent par une vue réservée aux
+# utilisateurs connectés (referentiel:document_fichier).
+MEDIA_URL = "media/"
+MEDIA_ROOT = Path(os.environ.get("DJANGO_MEDIA_ROOT", BASE_DIR / "media"))
+# Taille maximale d'une pièce jointe (Mo).
+DOCUMENTS_TAILLE_MAX_MO = int(os.environ.get("DOCUMENTS_TAILLE_MAX_MO", "10"))
+# Nombre de jours avant expiration à partir duquel un document est signalé.
+DOCUMENTS_DELAI_ALERTE_JOURS = int(os.environ.get("DOCUMENTS_DELAI_ALERTE_JOURS", "30"))
+
 # Stockage des statiques : WhiteNoise (compression + cache-busting) en prod.
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
@@ -186,8 +196,10 @@ RAPPORT_SIGNATAIRE_NOM = os.environ.get("RAPPORT_SIGNATAIRE_NOM", "Bamba Brahima
 # Format : "app_label.ModelName".
 SYNC_MODELS = [
     "referentiel.CategorieRoues",
+    "referentiel.Marque",
     "referentiel.Chauffeur",
     "referentiel.Vehicule",
+    "referentiel.DocumentVehicule",
     "referentiel.Engin",
     "entretien.Entretien",
     "carburant.PleinCarburant",

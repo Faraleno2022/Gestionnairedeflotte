@@ -11,6 +11,7 @@ import decimal
 import uuid
 
 from django.apps import apps
+from django.db.models.fields.files import FieldFile
 from django.utils.dateparse import parse_date, parse_datetime
 
 
@@ -31,6 +32,9 @@ def to_payload(instance) -> dict:
             data[field.attname] = str(value)
         elif isinstance(value, (datetime.datetime, datetime.date)):
             data[field.attname] = value.isoformat()
+        elif isinstance(value, FieldFile):
+            # Seul le chemin voyage : le contenu du fichier reste sur le nœud.
+            data[field.attname] = value.name or ""
         else:
             data[field.attname] = value
     return data
