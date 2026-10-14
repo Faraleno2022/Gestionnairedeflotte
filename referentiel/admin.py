@@ -22,6 +22,8 @@ class VehiculeAdmin(admin.ModelAdmin):
         "immatriculation",
         "marque",
         "capacite_tonnes",
+        "chauffeur_actuel",
+        "chauffeur_secondaire",
         "numero_chassis",
         "actif",
         "is_deleted",
@@ -46,6 +48,6 @@ class DocumentVehiculeAdmin(admin.ModelAdmin):
 
 @admin.register(Engin)
 class EnginAdmin(admin.ModelAdmin):
-    list_display = ["nom", "type_engin", "actif", "is_deleted", "updated_at"]
+    list_display = ["nom", "type_engin", "capacite", "actif", "is_deleted", "updated_at"]
     search_fields = ["nom"]
     list_filter = ["type_engin", "actif", "is_deleted"]

@@ -75,11 +75,19 @@ class Vehicule(SyncModel):
     )
     chauffeur_actuel = models.ForeignKey(
         Chauffeur,
-        verbose_name="Chauffeur attitré",
+        verbose_name="Chauffeur principal",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="vehicules",
+    )
+    chauffeur_secondaire = models.ForeignKey(
+        Chauffeur,
+        verbose_name="Second chauffeur",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="vehicules_secondaire",
     )
     type_vehicule = models.CharField("Type", max_length=60, blank=True)
     capacite_tonnes = models.PositiveSmallIntegerField(
@@ -95,6 +103,14 @@ class Vehicule(SyncModel):
 
     def __str__(self):
         return self.immatriculation
+
+    @property
+    def chauffeurs(self):
+        """Chauffeur principal puis second chauffeur (ceux renseignés)."""
+        return [c for c in (self.chauffeur_actuel, self.chauffeur_secondaire) if c]
+
+    def noms_chauffeurs(self):
+        return " / ".join(c.nom_prenoms for c in self.chauffeurs)
 
     def etat_documents(self):
         """Badges résumant l'état des documents (pour la liste des véhicules)."""
@@ -220,16 +236,28 @@ class DocumentVehicule(SyncModel):
 
 
 class Engin(SyncModel):
-    """Engin spécial : Poclain (pelle/chargeur), porte-char, etc."""
+    """Engin spécial : excavateur, chargeur, bulldozer, grue, porte-char, etc."""
 
     TYPE_CHOICES = [
-        ("poclain", "Poclain / Chargeur"),
+        ("excavateur", "Excavateur"),
+        ("chargeur", "Chargeur"),
+        ("bulldozer", "Bulldozer"),
+        ("grue_mobile", "Grue mobile"),
+        ("forklift", "Forklift (chariot élévateur)"),
+        ("compacteur", "Compacteur"),
+        ("poclain", "Poclain"),
         ("porte_char", "Porte-char"),
         ("autre", "Autre"),
     ]
     nom = models.CharField("Nom / Désignation", max_length=80)
     type_engin = models.CharField(
         "Type", max_length=20, choices=TYPE_CHOICES, default="autre"
+    )
+    capacite = models.CharField(
+        "Capacité",
+        max_length=40,
+        blank=True,
+        help_text="Ex. 1,5 m³ (godet), 25 tonnes (grue), 3 tonnes (forklift).",
     )
     actif = models.BooleanField("En service", default=True)
 

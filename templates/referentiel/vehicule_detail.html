@@ -18,6 +18,8 @@
       <div class="col-6 col-md-3"><div class="text-muted small">Type</div><div class="fw-semibold">{{ vehicule.type_vehicule|default:"—" }}</div></div>
       <div class="col-6 col-md-3"><div class="text-muted small">Capacité</div><div class="fw-semibold">{{ vehicule.get_capacite_tonnes_display|default:"—" }}</div></div>
       <div class="col-6 col-md-3"><div class="text-muted small">N° de châssis</div><div class="fw-semibold">{{ vehicule.numero_chassis|default:"—" }}</div></div>
+      <div class="col-6 col-md-3"><div class="text-muted small">Chauffeur principal</div><div class="fw-semibold">{{ vehicule.chauffeur_actuel|default:"—" }}</div></div>
+      <div class="col-6 col-md-3"><div class="text-muted small">Second chauffeur</div><div class="fw-semibold">{{ vehicule.chauffeur_secondaire|default:"—" }}</div></div>
       <div class="col-6 col-md-3"><div class="text-muted small">En service</div><div class="fw-semibold">{{ vehicule.actif|yesno:"Oui,Non" }}</div></div>
     </div>
   </div>
