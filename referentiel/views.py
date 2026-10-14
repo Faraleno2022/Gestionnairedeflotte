@@ -130,6 +130,7 @@ class VehiculeListe(BaseListe):
         ("Marque", "marque"),
         ("Type", "type_vehicule"),
         ("Capacité", "get_capacite_tonnes_display"),
+        ("Chauffeurs", "noms_chauffeurs"),
         ("N° de châssis", "numero_chassis"),
         ("Documents", "etat_documents"),
         ("En service", "actif"),
@@ -144,7 +145,7 @@ class VehiculeListe(BaseListe):
         return (
             super()
             .get_queryset()
-            .select_related("marque")
+            .select_related("marque", "chauffeur_actuel", "chauffeur_secondaire")
             .prefetch_related("documents")
         )
 
@@ -171,7 +172,8 @@ class VehiculeSupprimer(BaseSupprimer):
 @login_required
 def vehicule_detail(request, pk):
     """Fiche du véhicule avec ses documents (carte grise, assurance, …)."""
-    vehicule = get_object_or_404(Vehicule.objects.select_related("marque"), pk=pk)
+    vehicule = get_object_or_404(Vehicule.objects.select_related("marque", "chauffeur_actuel", "chauffeur_secondaire"), pk=pk
+    )
     return render(request, "referentiel/vehicule_detail.html", {
         "titre": f"Véhicule {vehicule.immatriculation}",
         "vehicule": vehicule,
@@ -254,6 +256,7 @@ class EnginListe(BaseListe):
     colonnes = [
         ("Nom", "nom"),
         ("Type", "get_type_engin_display"),
+        ("Capacité", "capacite"),
         ("En service", "actif"),
     ]
     url_creer = "referentiel:engin_creer"

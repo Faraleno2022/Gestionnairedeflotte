@@ -45,7 +45,8 @@
     var ve = document.getElementById("{{ form.vehicule.id_for_label }}");
     if (!ch || !ve) return;
     var inverse = {};
-    Object.keys(map).forEach(function (k) { inverse[map[k]] = k; });
+    // Véhicule -> chauffeur principal (inséré en premier dans la table).
+    Object.keys(map).forEach(function (k) { if (!(map[k] in inverse)) inverse[map[k]] = k; });
     ch.addEventListener("change", function () {
       if (map[ch.value]) ve.value = map[ch.value];
     });

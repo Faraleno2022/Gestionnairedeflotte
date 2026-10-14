@@ -29,13 +29,13 @@ def rapport_mensuel(annee, mois, jour):
     Tonnage (nb de voyages) et consommation de carburant par camion, pour le
     mois choisi et pour une journée donnée (feuille « Rapport »).
     """
-    vehicules = Vehicule.objects.filter(actif=True).select_related("chauffeur_actuel")
+    vehicules = Vehicule.objects.filter(actif=True).select_related("chauffeur_actuel", "chauffeur_secondaire")
 
     voyages, carburant = [], []
     for v in vehicules:
         voy_mois = Voyage.objects.filter(vehicule=v, date__year=annee, date__month=mois)
         pleins_mois = PleinCarburant.objects.filter(vehicule=v, date__year=annee, date__month=mois)
-        chauffeur = v.chauffeur_actuel.nom_prenoms if v.chauffeur_actuel else ""
+        chauffeur = v.noms_chauffeurs()
         voyages.append({
             "chauffeur": chauffeur,
             "immatriculation": v.immatriculation,

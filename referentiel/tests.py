@@ -11,7 +11,8 @@ from django.utils import timezone
 
 from sync.serializers import apply_payload, get_model, to_payload
 
-from .models import DocumentVehicule, Marque, Vehicule
+from .forms import VehiculeForm
+from .models import Chauffeur, DocumentVehicule, Engin, Marque, Vehicule
 
 MEDIA_TEST = tempfile.mkdtemp()
 
@@ -91,3 +92,58 @@ class DocumentsTests(TestCase):
         self.assertEqual(payload["fichier"], "documents_vehicules/x/assurance_police.pdf")
         clone = apply_payload(get_model("referentiel.DocumentVehicule"), payload)
         self.assertEqual(clone.fichier.name, d.fichier.name)
+
+
+class EnginsEtChauffeursTests(TestCase):
+    def setUp(self):
+        self.admin = User.objects.create_superuser("chef", password="x")
+        self.client.force_login(self.admin)
+        self.c1 = Chauffeur(nom_prenoms="Mamadou Diallo"); self.c1.save()
+        self.c2 = Chauffeur(nom_prenoms="Alpha Camara"); self.c2.save()
+
+    def test_types_engins_et_capacite(self):
+        types = dict(Engin.TYPE_CHOICES)
+        for code in ("excavateur", "chargeur", "bulldozer", "grue_mobile", "forklift", "compacteur"):
+            self.assertIn(code, types)
+        r = self.client.post(reverse("referentiel:engin_creer"), {
+            "nom": "Grue Liebherr", "type_engin": "grue_mobile", "capacite": "50 tonnes", "actif": "on",
+        })
+        self.assertEqual(r.status_code, 302)
+        engin = Engin.objects.get(nom="Grue Liebherr")
+        self.assertEqual(engin.capacite, "50 tonnes")
+        r = self.client.get(reverse("referentiel:engin_liste"))
+        self.assertContains(r, "Grue mobile")
+        self.assertContains(r, "50 tonnes")
+
+    def _form(self, **donnees):
+        base = {"immatriculation": "RC 1234", "actif": "on"}
+        base.update(donnees)
+        return VehiculeForm(data=base)
+
+    def test_deux_chauffeurs(self):
+        form = self._form(chauffeur_actuel=self.c1.pk, chauffeur_secondaire=self.c2.pk)
+        self.assertTrue(form.is_valid(), form.errors)
+        v = form.save()
+        self.assertEqual(v.noms_chauffeurs(), "Mamadou Diallo / Alpha Camara")
+        r = self.client.get(reverse("referentiel:vehicule_liste"))
+        self.assertContains(r, "Mamadou Diallo / Alpha Camara")
+        r = self.client.get(reverse("referentiel:vehicule_detail", args=[v.pk]))
+        self.assertContains(r, "Alpha Camara")
+
+    def test_chauffeurs_identiques_refuses(self):
+        form = self._form(chauffeur_actuel=self.c1.pk, chauffeur_secondaire=self.c1.pk)
+        self.assertFalse(form.is_valid())
+        self.assertIn("chauffeur_secondaire", form.errors)
+
+    def test_second_sans_principal_refuse(self):
+        form = self._form(chauffeur_secondaire=self.c2.pk)
+        self.assertFalse(form.is_valid())
+        self.assertIn("chauffeur_actuel", form.errors)
+
+    def test_synchro_second_chauffeur(self):
+        v = Vehicule(immatriculation="RC 1", chauffeur_actuel=self.c1, chauffeur_secondaire=self.c2)
+        v.save()
+        payload = to_payload(v)
+        self.assertEqual(payload["chauffeur_secondaire_id"], str(self.c2.pk))
+        clone = apply_payload(get_model("referentiel.Vehicule"), payload)
+        self.assertEqual(str(clone.chauffeur_secondaire_id), str(self.c2.pk))

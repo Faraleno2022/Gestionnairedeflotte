@@ -50,8 +50,18 @@ class VehiculeForm(_BootstrapForm):
             "capacite_tonnes",
             "numero_chassis",
             "chauffeur_actuel",
+            "chauffeur_secondaire",
             "actif",
         ]
+
+    def clean(self):
+        data = super().clean()
+        principal, second = data.get("chauffeur_actuel"), data.get("chauffeur_secondaire")
+        if principal and second and principal == second:
+            self.add_error("chauffeur_secondaire", "Le second chauffeur doit être différent du chauffeur principal.")
+        if second and not principal:
+            self.add_error("chauffeur_actuel", "Renseignez d'abord le chauffeur principal.")
+        return data
 
 
 class DocumentVehiculeForm(_BootstrapForm):
@@ -103,4 +113,4 @@ class DocumentVehiculeForm(_BootstrapForm):
 class EnginForm(_BootstrapForm):
     class Meta:
         model = Engin
-        fields = ["nom", "type_engin", "actif"]
+        fields = ["nom", "type_engin", "capacite", "actif"]
